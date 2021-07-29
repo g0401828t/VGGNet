@@ -195,7 +195,7 @@ def train():
                 # calculate validation Accuracy
                 val_acc += (prediction.max(1)[1] == y).sum().item() * 100 / len(val_set)
 
-        print(datetime.now().time().replace(microsecond=0), "EPOCHS: [{}], current_lr: [{}], avg_loss: [{:.4f}], val_loss: [{:.4f}], val_acc: [{:.2f}%]".format(
+        print(datetime.now().time().replace(microsecond=0), "EPOCHS: [{}], current_lr: [{}], avg_loss: [{:.8f}], val_loss: [{:.8f}], val_acc: [{:.2f}%]".format(
                 epoch+1, current_lr, avg_loss.item(), val_loss.item(), val_acc))
 
         # append list and plot graph
@@ -220,8 +220,10 @@ def train():
         if val_loss < best_loss:
             best_loss = val_loss
             es = earlystop
+            print("Best model saved")
             torch.save(model.state_dict(), saved_model_name)
         else: 
+            print("Not Best, earlystopping in:", earlystop, "step(s)")
             es -= 1
         if es == 0: 
             # model.load_state_dict(torch.load(model_save_name))
